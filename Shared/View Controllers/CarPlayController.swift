@@ -52,16 +52,29 @@ public class CarPlayController : NSObject, MPPlayableContentDelegate, MPPlayable
         }
     }
     
+    // CarPlay will resize tab bar images to crop out any transparent pixels on the border. This makes the icons look huge and squished up against the text.
+    // Fake out CarPlay by making the transparent background white, which ends up getting ignored because the image is marked as a template.
+    // Thanks to the fine folks at Supertop for figuring this one out!
+    private func mediaItemArtwork(withImageName name: String) -> MPMediaItemArtwork? {
+        var artwork : MPMediaItemArtwork?
+        if let contentImage = UIImage(named: name)  {
+            if let contentImage = contentImage.image(withColorOverlay: .white) {
+                let templatedImage = contentImage.withRenderingMode(.alwaysTemplate)
+                artwork = MPMediaItemArtwork(boundsSize: contentImage.size, requestHandler: { [unowned self] (size) -> UIImage in
+                    return contentImage
+                    //return self.resizeImage(image: contentImage, newSize: size)
+                })
+            }
+        }
+        return artwork
+    }
+    
     lazy var recentlyPlayedTabBarItem : MPContentItem = {
         let contentItem = MPContentItem(identifier: "live.relisten.RecentlyPlayed")
         contentItem.isPlayable = false
         contentItem.isContainer = true
         contentItem.title = "Recently Played"
-        if let contentImage = UIImage(named: "carplay-recent") {
-            contentItem.artwork = MPMediaItemArtwork(boundsSize: contentImage.size, requestHandler: { [unowned self] (size) -> UIImage in
-                return self.resizeImage(image: contentImage, newSize: size)
-            })
-        }
+        contentItem.artwork = mediaItemArtwork(withImageName: "carplay-recent")
         return contentItem
     }()
     
@@ -70,11 +83,7 @@ public class CarPlayController : NSObject, MPPlayableContentDelegate, MPPlayable
         contentItem.isPlayable = false
         contentItem.isContainer = true
         contentItem.title = "Downloads"
-        if let contentImage = UIImage(named: "carplay-download") {
-            contentItem.artwork = MPMediaItemArtwork(boundsSize: contentImage.size, requestHandler: {  [unowned self] (size) -> UIImage in
-                return self.resizeImage(image: contentImage, newSize: size)
-            })
-        }
+        contentItem.artwork = mediaItemArtwork(withImageName: "carplay-download")
         return contentItem
     }()
     
@@ -83,11 +92,7 @@ public class CarPlayController : NSObject, MPPlayableContentDelegate, MPPlayable
         contentItem.isPlayable = false
         contentItem.isContainer = true
         contentItem.title = "Favorites"
-        if let contentImage = UIImage(named: "carplay-heart") {
-            contentItem.artwork = MPMediaItemArtwork(boundsSize: contentImage.size, requestHandler: {  [unowned self] (size) -> UIImage in
-                return self.resizeImage(image: contentImage, newSize: size)
-            })
-        }
+        contentItem.artwork = mediaItemArtwork(withImageName: "carplay-heart")
         return contentItem
     }()
     
@@ -96,11 +101,7 @@ public class CarPlayController : NSObject, MPPlayableContentDelegate, MPPlayable
         contentItem.isPlayable = false
         contentItem.isContainer = true
         contentItem.title = "Artists"
-        if let contentImage = UIImage(named: "carplay-artist") {
-            contentItem.artwork = MPMediaItemArtwork(boundsSize: contentImage.size, requestHandler: {  [unowned self] (size) -> UIImage in
-                return self.resizeImage(image: contentImage, newSize: size)
-            })
-        }
+        contentItem.artwork = mediaItemArtwork(withImageName: "carplay-artist")
         return contentItem
     }()
     
@@ -632,5 +633,23 @@ extension CompleteShowInformation {
         contentItem.isPlayable = false
         
         return contentItem
+    }
+}
+
+//MARK: UIImage Helper
+public extension UIImage {
+    public func image(withColorOverlay color: UIColor) -> UIImage? {
+        var result : UIImage?
+        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, self.scale)
+        if let context : CGContext = UIGraphicsGetCurrentContext() {
+            self.draw(in: rect)
+            context.setFillColor(color.cgColor)
+            context.setBlendMode(.sourceAtop)
+            context.fill(rect)
+            result = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+        }
+        return result
     }
 }
