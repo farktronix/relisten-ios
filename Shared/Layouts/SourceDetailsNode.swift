@@ -11,6 +11,10 @@ import Foundation
 import AsyncDisplayKit
 import Observable
 
+public protocol SourceDetailsDelegate {
+    func sourceNeedsRelayout(_ sourceNode: SourceDetailsNode)
+}
+
 public class SourceDetailsNode : ASCellNode {
     public let source: SourceFull
     public let show: ShowWithSources
@@ -18,14 +22,19 @@ public class SourceDetailsNode : ASCellNode {
     public let index: Int
     public let isDetails: Bool
     
+    public var delegate : SourceDetailsDelegate? = nil
+    
+    public var isExpanded : Bool = false
+    
     var disposal = Disposal()
     
-    public init(source: SourceFull, inShow show: ShowWithSources, artist: SlimArtistWithFeatures, atIndex: Int, isDetails: Bool) {
+    public init(source: SourceFull, inShow show: ShowWithSources, artist: SlimArtistWithFeatures, atIndex: Int, isDetails: Bool, delegate : SourceDetailsDelegate? = nil) {
         self.source = source
         self.show = show
         self.artist = artist
         self.index = atIndex
         self.isDetails = isDetails
+        self.delegate = delegate
         
         self.showNameNode = ASTextNode(
             isDetails ? (source.venue?.name ?? show.venue?.name ?? "") : "Source \(atIndex + 1) of \(show.sources.count)",
@@ -111,10 +120,14 @@ public class SourceDetailsNode : ASCellNode {
             else {
                 sourceNode = nil
             }
+            
+            expandNode = ASButtonNode()
+            expandNode?.setTitle("...", with: UIFont.preferredFont(forTextStyle: .subheadline), with: nil, for: .normal)
         }
         else {
             sourceNode = nil
             sourcePeopleNode = nil
+            expandNode = nil
         }
         
         detailsNode = ASTextNode("See details, taper notes, reviews & more ›", textStyle: .caption1, color: .gray)
@@ -123,6 +136,8 @@ public class SourceDetailsNode : ASCellNode {
         
         automaticallyManagesSubnodes = true
         accessoryType = isDetails ? .none : .disclosureIndicator
+        
+        expandNode?.addTarget(self, action: #selector(expandButtonPressed(_:)), forControlEvents: .touchUpInside)
         
         if !isDetails {
             let library = MyLibraryManager.shared.library
@@ -139,6 +154,12 @@ public class SourceDetailsNode : ASCellNode {
         }
     }
     
+    @objc func expandButtonPressed(_ sender: UIButton) {
+        isExpanded = !isExpanded
+        delegate?.sourceNeedsRelayout(self)
+        self.setNeedsLayout()
+    }
+    
     public let showNameNode: ASTextNode
     public let ratingNode: AXRatingViewNode
     public let ratingCountNode: ASTextNode
@@ -148,6 +169,7 @@ public class SourceDetailsNode : ASCellNode {
     
     public let sourcePeopleNode: ASStackLayoutSpec?
     public let sourceNode: ASTextNode?
+    public let expandNode : ASButtonNode?
 
     public let sbdNode: SoundboardIndicatorNode?
     public let remasterNode: RemasterIndicatorNode?
@@ -208,7 +230,7 @@ public class SourceDetailsNode : ASCellNode {
                     top,
                     second,
                     sourcePeopleNode,
-                    sourceNode,
+                    isExpanded ? sourceNode : nil,
                     detailsNode
                     )
                 )
@@ -221,7 +243,8 @@ public class SourceDetailsNode : ASCellNode {
                 children: ArrayNoNils(
                     top,
                     sourcePeopleNode,
-                    sourceNode
+                    isExpanded ? sourceNode : nil,
+                    expandNode
                 )
             )
         }

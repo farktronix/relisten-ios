@@ -14,7 +14,7 @@ import Siesta
 import AsyncDisplayKit
 import SINQ
 
-class SourcesViewController: RelistenAsyncTableController<ShowWithSources> {
+class SourcesViewController: RelistenAsyncTableController<ShowWithSources>, SourceDetailsDelegate {
     
     let artist: ArtistWithCounts
     let show: Show?
@@ -117,6 +117,10 @@ class SourcesViewController: RelistenAsyncTableController<ShowWithSources> {
         }
     }
     
+    public func sourceNeedsRelayout(_ sourceNode: SourceDetailsNode) {
+        tableNode.relayoutItems()
+    }
+    
     func numberOfSections(in tableNode: ASTableNode) -> Int {
         if canSkipIfSingleSource {
             return 0
@@ -137,7 +141,7 @@ class SourcesViewController: RelistenAsyncTableController<ShowWithSources> {
         let source = sources[indexPath.row]
         let artist = self.artist
         
-        return { SourceDetailsNode(source: source, inShow: show, artist: artist, atIndex: indexPath.row, isDetails: false) }
+        return { SourceDetailsNode(source: source, inShow: show, artist: artist, atIndex: indexPath.row, isDetails: false, delegate: self) }
     }
     
     func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
