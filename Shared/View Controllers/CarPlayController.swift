@@ -579,6 +579,14 @@ public class CarPlayController : NSObject, MPPlayableContentDelegate, MPPlayable
         return nil
     }
     
+    private func preloadArtworkForShows(inYear year : YearWithShows) {
+        DispatchQueue.global(qos: .utility).async {
+            for show in year.shows {
+                show.preloadAlbumArtwork()
+            }
+        }
+    }
+    
     public func beginLoadingChildItems(at indexPath: IndexPath, completionHandler: @escaping (Error?) -> Swift.Void) {
         guard let section = carPlaySection(from: indexPath) else {
             // TODO: Create an error
@@ -594,7 +602,9 @@ public class CarPlayController : NSObject, MPPlayableContentDelegate, MPPlayable
                 case .artists:
                     let (artist, _, _, _, _, _, _) = self.allArtistItems(at: indexPath)
                     if let artist = artist {
-                        request = RelistenApi.years(byArtist: artist).loadFromCacheThenUpdate()
+                        if RelistenApi.years(byArtist: artist).latestData == nil {
+                            request = RelistenApi.years(byArtist: artist).loadFromCacheThenUpdate()
+                        }
                     }
                 default:
                     break
@@ -605,7 +615,16 @@ public class CarPlayController : NSObject, MPPlayableContentDelegate, MPPlayable
                     let (artist, _, year, _, _, _, _) = self.allArtistItems(at: indexPath)
                     if let artist = artist {
                         if let year = year {
-                            request = RelistenApi.shows(inYear: year, byArtist: artist).loadFromCacheThenUpdate()
+                            if let yearWithShows : YearWithShows = RelistenApi.shows(inYear: year, byArtist: artist).latestData?.typedContent() {
+                                self.preloadArtworkForShows(inYear: yearWithShows)
+                            } else {
+                                request = RelistenApi.shows(inYear: year, byArtist: artist).loadFromCacheThenUpdate()
+                                request?.onSuccess({ (latestData) in
+                                    if let yearWithShows : YearWithShows = latestData.typedContent() {
+                                        self.preloadArtworkForShows(inYear: yearWithShows)
+                                    }
+                                })
+                            }
                         }
                     }
                 default:
@@ -617,7 +636,9 @@ public class CarPlayController : NSObject, MPPlayableContentDelegate, MPPlayable
                     let (artist, _, _, _, show, _, _) = self.allArtistItems(at: indexPath)
                     if let artist = artist {
                         if let show = show {
-                            request = RelistenApi.showWithSources(forShow: show, byArtist: artist).loadFromCacheThenUpdate()
+                            if RelistenApi.showWithSources(forShow: show, byArtist: artist).latestData?.typedContent() == nil {
+                                request = RelistenApi.showWithSources(forShow: show, byArtist: artist).loadFromCacheThenUpdate()
+                            }
                         }
                     }
                 default:
@@ -761,6 +782,20 @@ extension Show {
         
         return contentItem
     }
+    
+    public func hasCachedAlbumArtwork() -> Bool {
+        return AlbumArtImageCache.shared.cache.imageExists(for: self.fastImageCacheWrapper(), withFormatName: AlbumArtImageCache.imageFormatCarPlay)
+    }
+    
+    public func preloadAlbumArtwork(completionHandler : ((_ didLoadImage : Bool) -> Void)? = nil) {
+        if !(hasCachedAlbumArtwork()) {
+            AlbumArtImageCache.shared.cache.asynchronouslyRetrieveImage(for: self.fastImageCacheWrapper(), withFormatName: AlbumArtImageCache.imageFormatCarPlay, completionBlock: { (_, _, _) in
+                completionHandler?(true)
+            })
+        } else {
+            completionHandler?(false)
+        }
+    }
 }
 
 extension Year {
@@ -784,11 +819,11 @@ extension Year {
 
 extension MPMediaItemArtwork {
     public convenience init(forShow show : Show) {
-        self.init(boundsSize: AlbumArtImageCache.imageFormatSmallBounds, requestHandler: { (size) -> UIImage in
+        self.init(boundsSize: AlbumArtImageCache.imageFormatCarPlayBounds, requestHandler: { (size) -> UIImage in
             var image : UIImage? = nil
             // I'm pretty unhappy with this. I wish CarPlay provided an escaping closure for returning the UIImage
             let sem = DispatchSemaphore(value: 0)
-            AlbumArtImageCache.shared.cache.retrieveImage(for: show.fastImageCacheWrapper(), withFormatName: AlbumArtImageCache.imageFormatSmall, completionBlock: { (_, _, blockImage) in
+            AlbumArtImageCache.shared.cache.retrieveImage(for: show.fastImageCacheWrapper(), withFormatName: AlbumArtImageCache.imageFormatCarPlay, completionBlock: { (_, _, blockImage) in
                 image = blockImage
                 sem.signal()
             })

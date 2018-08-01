@@ -20,10 +20,12 @@ class AlbumArtImageCache : NSObject, FICImageCacheDelegate {
     static let shared : AlbumArtImageCache = AlbumArtImageCache()
     public let cache : FICImageCache = FICImageCache.shared()
     
+    public static let imageFormatCarPlay = "net.relisten.ios.albumart.carplay"
     public static let imageFormatSmall = "net.relisten.ios.albumart.small"
     public static let imageFormatMedium = "net.relisten.ios.albumart.medium"
     public static let imageFormatFull = "net.relisten.ios.albumart.full"
     
+    public static let imageFormatCarPlayBounds = CGSize(width: 72, height: 72)
     public static let imageFormatSmallBounds = CGSize(width: 112 * 2, height: 112 * 2)
     public static let imageFormatMediumBounds = CGSize(width: 512, height: 512)
     public static let imageFormatFullBounds = CGSize(width: 768, height: 768)
@@ -31,6 +33,15 @@ class AlbumArtImageCache : NSObject, FICImageCacheDelegate {
     private let imageFamily = "net.relisten.ios.albumart"
 
     public override init() {
+        let carplay = FICImageFormat()
+        carplay.name = AlbumArtImageCache.imageFormatCarPlay
+        carplay.family = imageFamily
+        carplay.style = .style32BitBGR
+        carplay.imageSize = AlbumArtImageCache.imageFormatCarPlayBounds
+        carplay.maximumCount = 500
+        carplay.devices = [.phone, .pad]
+        carplay.protectionMode = .none
+        
         let small = FICImageFormat()
         small.name = AlbumArtImageCache.imageFormatSmall
         small.family = imageFamily
@@ -58,7 +69,7 @@ class AlbumArtImageCache : NSObject, FICImageCacheDelegate {
         full.devices = [.phone, .pad]
         full.protectionMode = .none
         
-        cache.setFormats([small, medium, full])
+        cache.setFormats([carplay, small, medium, full])
         
         super.init()
         

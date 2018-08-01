@@ -27,19 +27,29 @@ public class CompleteShowInformation : Codable, Hashable  {
     public let show: Show
     public let artist: ArtistWithCounts
     
-    public var originalJSON: SwJSON
+    public var _originalJSON : SwJSON?
+    public var originalJSON: SwJSON {
+        get {
+            if _originalJSON != nil {
+                return _originalJSON!
+            } else {
+                var j = SwJSON([:])
+                j["source"] = source.originalJSON
+                j["show"] = show.originalJSON
+                j["artist"] = artist.originalJSON
+                _originalJSON = j
+                return _originalJSON!
+            }
+        }
+        set {
+            _originalJSON = newValue
+        }
+    }
     
     public required init(source: SourceFull, show: Show, artist: ArtistWithCounts) {
         self.source = source
         self.show = show
         self.artist = artist
-        
-        var j = SwJSON([:])
-        j["source"] = source.originalJSON
-        j["show"] = show.originalJSON
-        j["artist"] = artist.originalJSON
-        
-        originalJSON = j
     }
     
     public required init(json: SwJSON) throws {

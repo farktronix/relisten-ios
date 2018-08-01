@@ -8,6 +8,16 @@
 
 import Foundation
 
+class CurrentYear {
+    static let shared = CurrentYear()
+    public lazy var currentYear : Int = {
+        let calendar = Calendar(identifier: .gregorian)
+        return calendar.component(.year, from: Date())
+    }()
+    
+    public init() {}
+}
+
 public func sortedYears(from years : [Year], for artist : SlimArtist? = nil) -> [Year]{
     var shouldSortDescending = false
     
@@ -25,10 +35,7 @@ public func sortedYears(from years : [Year], for artist : SlimArtist? = nil) -> 
     
     // Sort descending if the band has performed within the last two years
     if let firstYear = sortedYears.first, let mostRecentYear = Int(firstYear.year) {
-        let calendar = Calendar(identifier: .gregorian)
-        let currentYear = calendar.component(.year, from: Date())
-        shouldSortDescending = (currentYear - mostRecentYear) < 2;
-        
+        shouldSortDescending = (CurrentYear.shared.currentYear - mostRecentYear) < 2;
     }
 
     if shouldSortDescending {
