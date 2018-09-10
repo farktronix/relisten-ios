@@ -9,6 +9,8 @@
 import Foundation
 import PinpointKit
 import CWStatusBarNotification
+import RealmSwift
+import RealmConverter
 
 public class UserFeedback  {
     static public let shared = UserFeedback()
@@ -89,7 +91,32 @@ class RelistenLogCollector : LogCollector {
             LogWarn("Error enumerating downloaded tracks: \(error)")
         }
         
-        // TODO: Dump the database
+        // Dump the database
+        do {
+            let realm = try Realm()
+            let exporter = CSVDataExporter(realm: realm.rlmRealm)
+            if let tmpPath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
+                let exportPath = tmpPath + "/" + String(Date().timeIntervalSinceReferenceDate)
+                try fm.createDirectory(atPath: exportPath, withIntermediateDirectories: true, attributes: nil)
+                // Export the database
+                try exporter.export(toFolderAtPath: exportPath)
+                // The exporter creates a bunch of files, one for each object type in the database
+                retval.append("======= Database Contents =======")
+                for filename in try fm.contentsOfDirectory(atPath: exportPath) {
+                    let curObjectString = try String(contentsOfFile: exportPath + "/" + filename)
+                    retval.append("---- \(filename) ----\n")
+                    retval.append(curObjectString + "\n")
+                    retval.append("---- END \(filename) ----\n")
+                }
+                retval.append("======= End Database Contents =======\n\n")
+                
+                // Clean up after ourselves
+                try fm.removeItem(atPath: exportPath)
+            }
+        } catch {
+            LogWarn("Exception while exporting database: \(error)")
+        }
+        
         
         // Grab the latest log file
         autoreleasepool {

@@ -13,6 +13,7 @@ def apply_pods
   pod 'ChameleonFramework'
   pod 'CleanroomLogger', :git => "https://github.com/farktronix/CleanroomLogger"
   pod 'Crashlytics'
+  pod 'CSwiftV', :git => "https://github.com/benpackard/CSwiftV.git" # Used by RealmConverter. The main version hasn't been updated for Swift 4
   pod 'DownloadButton', :git => "https://github.com/farktronix/DownloadButton"
   pod 'EDColor'
   pod 'Fabric'
@@ -27,6 +28,7 @@ def apply_pods
   pod 'PinpointKit'
   pod 'PinpointKit/ScreenshotDetector'
   pod 'RealmSwift'
+  pod 'RealmConverter', :git => "https://github.com/farktronix/realm-cocoa-converter.git"
   pod 'SDCloudUserDefaults'
   pod 'SINQ'
   pod 'SVProgressHUD'

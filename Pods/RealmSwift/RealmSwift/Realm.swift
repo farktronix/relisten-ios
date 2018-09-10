@@ -664,7 +664,7 @@ public final class Realm {
 
     // MARK: Internal
 
-    internal var rlmRealm: RLMRealm
+    public var rlmRealm: RLMRealm
 
     internal init(_ rlmRealm: RLMRealm) {
         self.rlmRealm = rlmRealm
