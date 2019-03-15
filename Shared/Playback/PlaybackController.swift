@@ -20,7 +20,7 @@ extension AGAudioPlayerViewController : TrackStatusActionHandler {
     }
 }
 
-@objc public class PlaybackController : NSObject {
+public class PlaybackController : NSObject, NSCoding {
     public let playbackQueue: AGAudioPlayerUpNextQueue
     public let player: AGAudioPlayer
     public let viewController: AGAudioPlayerViewController
@@ -34,7 +34,7 @@ extension AGAudioPlayerViewController : TrackStatusActionHandler {
     public var eventTrackWasPlayed : Event<Track>
 
     public var window: UIWindow? = nil
-        
+    
     public convenience init(withWindow window : UIWindow? = nil, previousPlaybackController: PlaybackController? = nil) {
         self.init()
         
@@ -71,29 +71,39 @@ extension AGAudioPlayerViewController : TrackStatusActionHandler {
         self.eventTrackWasPlayed = previous.eventTrackWasPlayed
     }
     
-    public func viewDidLoad() {
-        viewController.loadViewIfNeeded()
-    }
-    
-    enum CodingKey:String {
-        case queue = "queue"
-        case player = "player"
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError()
-    }
-    
-    public func decodeRestorableState(with coder: NSCoder) {
-        
+    private enum CodingKeys : String, CodingKey {
+        case queue
     }
     
     public func encode(with aCoder: NSCoder) {
-        aCoder.encode(playbackQueue, forKey: CodingKey.queue.rawValue)
-        aCoder.encode(player, forKey: CodingKey.player.rawValue)
+        aCoder.encode(playbackQueue, forKey: CodingKeys.queue.rawValue)
     }
     
-    public static var supportsSecureCoding: Bool { get { return true } }
+    public required convenience init?(coder aDecoder: NSCoder) {
+        if let queue = aDecoder.decodeObject(of: AGAudioPlayerUpNextQueue.self, forKey: CodingKeys.queue.rawValue) {
+            LogDebug("Queue decoded: \(queue)")
+        }
+        self.init()
+    }
+    
+//    required public convenience init(from decoder: Decoder) throws {
+//        let values = try decoder.container(keyedBy: CodingKeys.self)
+//        let data = try values.decode(Data.self, forKey:.playbackQueue)
+//        if let queue = try NSKeyedUnarchiver.unarchivedObject(ofClass: AGAudioPlayerUpNextQueue.self, from: data) {
+//            LogDebug("Queue decoded: \(queue)")
+//        }
+//        self.init()
+//    }
+//
+//    public func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        let playbackQueueData = NSKeyedArchiver.archivedData(withRootObject: playbackQueue)
+//        try container.encode(playbackQueueData, forKey: .playbackQueue)
+//    }
+    
+    public func viewDidLoad() {
+        viewController.loadViewIfNeeded()
+    }
     
     public func displayMini(on vc: UIViewController, completion: (() -> Void)?) {
         if let nav = vc.navigationController {

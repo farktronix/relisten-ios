@@ -121,21 +121,30 @@ extension AppDelegate {
     }
     
     public func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
-        // TODO: Encode the PlaybackController state here
+        if let playbackController = RelistenApp.sharedApp.playbackController {
+            coder.encode(playbackController, forKey: "PlaybackController")
+        }
     }
     
     public func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
-        // TODO: Decode the PlaybackController state here
-        
+        if let _ = coder.decodeObject(forKey: "PlaybackController") as? PlaybackController {
+            LogDebug("Playback controller loaded")
+        }
     }
     
     public func application(_ application: UIApplication,
                               viewControllerWithRestorationIdentifierPath identifierComponents: [String],
                               coder: NSCoder) -> UIViewController? {
-        if let firstIdentifier = identifierComponents.first,
-           firstIdentifier == "net.relisten.RelistenNavigationController" {
-            rootNavigationController = RelistenNavigationController(rootViewController: ArtistsViewController())
-            return rootNavigationController
+        if let firstIdentifier = identifierComponents.first {
+            switch firstIdentifier {
+            case "net.relisten.RelistenNavigationController":
+                rootNavigationController = RelistenNavigationController(rootViewController: ArtistsViewController())
+                return rootNavigationController
+            case "com.alecgorge.AGAudioPlayer.AGAudioPlayerViewController":
+                return nil
+            default:
+                return nil
+            }
         }
         return nil
     }
