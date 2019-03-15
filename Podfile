@@ -10,7 +10,6 @@ def apply_pods
   pod 'ActionKit'
   pod 'CWStatusBarNotification'
   pod 'Cache'
-  pod 'ChameleonFramework'
   pod 'CleanroomLogger', :git => "https://github.com/farktronix/CleanroomLogger" # Needed because the authors refuse to add CocoaPods support https://github.com/emaloney/CleanroomLogger/issues/69
   pod 'Crashlytics'
   pod 'CSwiftV', :git => "https://github.com/UberJason/CSwiftV.git" # Needed for RealmConverter until PR https://github.com/Daniel1of1/CSwiftV/pull/38 is accepted

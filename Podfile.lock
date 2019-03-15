@@ -10,9 +10,6 @@ PODS:
   - BASSGaplessAudioPlayer (0.0.1)
   - BCColor (0.2)
   - Cache (5.2.0)
-  - ChameleonFramework (2.1.0):
-    - ChameleonFramework/Default (= 2.1.0)
-  - ChameleonFramework/Default (2.1.0)
   - CleanroomLogger (6.0.2)
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
@@ -82,7 +79,6 @@ DEPENDENCIES:
   - AXRatingView
   - BASSGaplessAudioPlayer (from `../BASSGaplessAudioPlayer`)
   - Cache
-  - ChameleonFramework
   - CleanroomLogger (from `https://github.com/farktronix/CleanroomLogger`)
   - Crashlytics
   - CSwiftV (from `https://github.com/UberJason/CSwiftV.git`)
@@ -123,7 +119,6 @@ SPEC REPOS:
     - AXRatingView
     - BCColor
     - Cache
-    - ChameleonFramework
     - Crashlytics
     - CWStatusBarNotification
     - DWURecyclingAlert
@@ -211,10 +206,10 @@ CHECKOUT OPTIONS:
     :commit: bb393be86a38a402c66239f80f5cc600003a6b68
     :git: https://github.com/farktronix/realm-cocoa-converter.git
   Siesta:
-    :commit: b13dad7cb2bfca15fa4450e19cd23d04b8378049
+    :commit: 0cbb5c27b43b2b03b7885d2f4cba7bc6b5daa9b8
     :git: https://github.com/bustoutsolutions/siesta.git
   Texture:
-    :commit: e4d6fae660da8bbca061398a56fd49f4debd2806
+    :commit: 4d29d85b09f0fb8063a7c7d2ae9dd7a2347bf5b9
     :git: https://github.com/farktronix/Texture.git
 
 SPEC CHECKSUMS:
@@ -224,7 +219,6 @@ SPEC CHECKSUMS:
   BASSGaplessAudioPlayer: 5b074495769769192b720c70aa2a60f6f33751f3
   BCColor: 2425540cb0da92795b81a1f15b5289a92279c9eb
   Cache: 807c5d86d01a177f06ede9865add3aea269bbfd4
-  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   CleanroomLogger: f165bae4f3c9a15a22ec2fad9b0826f27fb047d5
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CSwiftV: 2560532e2e5b04d95c36b0f49a8dc745071fa525
@@ -262,6 +256,6 @@ SPEC CHECKSUMS:
   Texture: 83e34f03666be58a4af0bc708982b594154970d9
   Wormholy: 0222592d5c7a019527911701ba7fd5fe64c798da
 
-PODFILE CHECKSUM: 4cfdd6742c309431500f49df34951c15cc7a87cb
+PODFILE CHECKSUM: 899faba9d7531dd1ba4a4b794beb0e9ed4cf21e8
 
 COCOAPODS: 1.7.0.beta.1

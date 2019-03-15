@@ -25,7 +25,7 @@ public class _AppColors : Equatable {
         return lhs === rhs
     }
     
-    public init(primary: UIColor, textOnPrimary: UIColor, highlight: UIColor? = nil, soundboard: UIColor, remaster: UIColor, mutedText: UIColor, lightGreyBackground: UIColor) {
+    public init(primary: UIColor, textOnPrimary: UIColor, highlight: UIColor, soundboard: UIColor, remaster: UIColor, mutedText: UIColor, lightGreyBackground: UIColor) {
         self.primary = primary
         self.textOnPrimary = textOnPrimary
         self.highlight = highlight

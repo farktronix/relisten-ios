@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ChameleonFramework
 import FastImageCache
 
 public enum AlbumArtImageFormat : String {
