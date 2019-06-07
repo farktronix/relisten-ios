@@ -37,7 +37,7 @@ def apply_pods
   pod 'Siesta/Core', :git => 'https://github.com/bustoutsolutions/siesta.git'
   pod 'Siesta/UI', :git => 'https://github.com/bustoutsolutions/siesta.git'
   pod 'SwiftyJSON'
-  pod 'CouchbaseLite-Swift'
+  pod 'CouchbaseLite-Swift', :path => '../couchbase-lite-ios'
   pod 'DZNEmptyDataSet'
   
   pod 'Texture/Core'

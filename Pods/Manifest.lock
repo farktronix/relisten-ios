@@ -12,7 +12,7 @@ PODS:
     - ChameleonFramework/Default (= 2.1.0)
   - ChameleonFramework/Default (2.1.0)
   - CleanroomLogger (6.0.3)
-  - CouchbaseLite-Swift (2.5.1)
+  - CouchbaseLite-Swift (2.0.0)
   - Crashlytics (3.13.1):
     - Fabric (~> 1.10.1)
   - CSwiftV (0.0.9)
@@ -82,7 +82,7 @@ DEPENDENCIES:
   - Cache (from `https://github.com/farktronix/Cache.git`)
   - ChameleonFramework (from `https://github.com/farktronix/Chameleon.git`)
   - CleanroomLogger (from `https://github.com/farktronix/CleanroomLogger`)
-  - CouchbaseLite-Swift
+  - CouchbaseLite-Swift (from `../couchbase-lite-ios`)
   - Crashlytics
   - CSwiftV
   - CWStatusBarNotification
@@ -121,7 +121,6 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - ActionKit
     - AXRatingView
-    - CouchbaseLite-Swift
     - Crashlytics
     - CSwiftV
     - CWStatusBarNotification
@@ -160,6 +159,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/farktronix/Chameleon.git
   CleanroomLogger:
     :git: https://github.com/farktronix/CleanroomLogger
+  CouchbaseLite-Swift:
+    :path: "../couchbase-lite-ios"
   DownloadButton:
     :git: https://github.com/farktronix/DownloadButton
   FastImageCache:
@@ -224,13 +225,13 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   ActionKit: cdea709a5803ccb65a8e5980eb1f1c36016e623c
-  AGAudioPlayer: 26dd2722f8073d3791fd057766364ade3362e246
+  AGAudioPlayer: d1c572757f190502712aa2c6bfa74d646022fba6
   AXRatingView: b975cd1a11c6c2e76c8999c166e089ed26f54133
   BASSGaplessAudioPlayer: 5b074495769769192b720c70aa2a60f6f33751f3
   Cache: 807c5d86d01a177f06ede9865add3aea269bbfd4
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   CleanroomLogger: 8de6eb3511ebc6387428c55f69e86822533a588e
-  CouchbaseLite-Swift: 89876f4656ef16945aea554127755ee40855af12
+  CouchbaseLite-Swift: 7f5cab633eaf2befe1401c8a74cc530ed757a177
   Crashlytics: 5aa8e90dcbf2f34898b4f5a0037787531246cca0
   CSwiftV: 8dde426ad2a4f645bdfb513b8aa878d555aeff60
   CWStatusBarNotification: 3d2738b25c3207f60cc50201388d3c96182545ff
@@ -268,6 +269,6 @@ SPEC CHECKSUMS:
   Texture: 8ecf6984065a1e54f06bf97b349ecca28582acd7
   Wormholy: f2488b9690976459a3ce6680ec099143724418d8
 
-PODFILE CHECKSUM: 790de1113b87a533641090ec6f5a9221e2255471
+PODFILE CHECKSUM: 548f945b5f65aa1d171473e0c42e56ca43934955
 
-COCOAPODS: 1.7.0.beta.2
+COCOAPODS: 1.7.1
