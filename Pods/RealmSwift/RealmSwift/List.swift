@@ -619,7 +619,7 @@ extension List: MutableCollection {
 
      - warning: This method may only be called during a write transaction.
      */
-    public func removeSubrange<R>(_ boundsExpression: R) where R : RangeExpression, List<Element>.Index == R.Bound {
+    public func removeSubrange<R>(_ boundsExpression: R) where R: RangeExpression, List<Element>.Index == R.Bound {
         let bounds = boundsExpression.relative(to: self)
         for _ in bounds {
             remove(at: bounds.lowerBound)
@@ -705,19 +705,6 @@ extension List: RangeReplaceableCollection {
         _rlmArray.removeLastObject()
     }
 
-#if swift(>=3.2)
-    // The issue described below is fixed in Swift 3.2 and above.
-#else
-    // These should not be necessary, but Swift 3.1's compiler fails to infer the `SubSequence`,
-    // and the standard library neglects to provide the default implementation of `subscript`
-    /// :nodoc:
-    public typealias SubSequence = RangeReplaceableRandomAccessSlice<List>
-
-    /// :nodoc:
-    public subscript(slice: Range<Int>) -> SubSequence {
-        return SubSequence(base: self, bounds: slice)
-    }
-#endif
 }
 #endif
 
