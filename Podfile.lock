@@ -68,13 +68,6 @@ PODS:
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
-  - sqlite3 (3.33.0):
-    - sqlite3/common (= 3.33.0)
-  - sqlite3/common (3.33.0)
-  - sqlite3/json1 (3.33.0):
-    - sqlite3/common
-  - sqlite3/perf-threadsafe (3.33.0):
-    - sqlite3/common
   - SSZipArchive (2.2.3)
   - SVProgressHUD (2.2.5)
   - SwiftyJSON (5.0.0)
@@ -120,10 +113,6 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - SINQ
   - SQLite.swift
-  - sqlite3
-  - sqlite3/common
-  - sqlite3/json1
-  - sqlite3/perf-threadsafe
   - SVProgressHUD
   - SwiftyJSON
   - Texture/Core
@@ -157,7 +146,6 @@ SPEC REPOS:
     - SimulatorStatusMagic
     - SINQ
     - SQLite.swift
-    - sqlite3
     - SSZipArchive
     - SVProgressHUD
     - SwiftyJSON
@@ -273,13 +261,12 @@ SPEC CHECKSUMS:
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   SINQ: 64cab7b7c73486da8f4442c25ccdd6ada7e67b95
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
-  sqlite3: cd6cd1a4ee50b8b5fdad2940bd05b1c1d2659efc
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   Texture: 2f109e937850d94d1d07232041c9c7313ccddb81
   Wormholy: bfc1c8679eefd0edd92638758e21c3961b1b3b50
 
-PODFILE CHECKSUM: c35cda6692055f2cf9792d39f0582118119e8bc2
+PODFILE CHECKSUM: 9449430da3e89db61f44def1f859e29205e3676c
 
 COCOAPODS: 1.9.3

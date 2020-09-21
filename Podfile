@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '11.0'
+platform :ios, '14.0'
 
 def apply_pods
   # Comment this line if you're not using Swift and don't want to use dynamic frameworks
@@ -39,10 +39,10 @@ def apply_pods
   pod 'SwiftyJSON'
 #  pod 'CouchbaseLite-Swift'
   pod 'DZNEmptyDataSet'
-  pod 'sqlite3'
-  pod 'sqlite3/common'
-  pod 'sqlite3/perf-threadsafe'
-  pod 'sqlite3/json1'
+#  pod 'sqlite3'
+#  pod 'sqlite3/common'
+#  pod 'sqlite3/perf-threadsafe'
+#  pod 'sqlite3/json1'
   pod 'SQLite.swift'
   
   pod 'Texture/Core'
