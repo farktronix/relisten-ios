@@ -25,11 +25,6 @@ public class ArtistViewController : RelistenTableViewController<[Year]>, KASlide
         self.artist = artist
         
         super.init(useCache: true, refreshOnAppear: true)
-        
-        if RelistenApp.sharedApp.isPhishOD {
-            let settingsItem = UIBarButtonItem(image: #imageLiteral(resourceName: "gear"), style: .plain, target: self, action: #selector(presentSettings(_:)))
-            self.navigationItem.rightBarButtonItem = settingsItem
-        }
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -59,11 +54,7 @@ public class ArtistViewController : RelistenTableViewController<[Year]>, KASlide
 
         tableNode.view.separatorStyle = .none
         
-        if RelistenApp.sharedApp.isPhishOD {
-            title = RelistenApp.appName
-        } else {
-            title = artist.name
-        }
+        title = artist.name
         
         av = RelistenMenuView(artist: artist, inViewController: self)
         av.frame.origin = CGPoint(x: 0, y: 16)

@@ -29,6 +29,7 @@
 		433A440B2133B4B10059D251 /* BugReportingSettingsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433A440A2133B4B10059D251 /* BugReportingSettingsNode.swift */; };
 		433A440E2134E9A60059D251 /* Credits.plist in Resources */ = {isa = PBXBuildFile; fileRef = 433A440D2134E9A50059D251 /* Credits.plist */; };
 		433A440F2134E9A60059D251 /* Credits.plist in Resources */ = {isa = PBXBuildFile; fileRef = 433A440D2134E9A50059D251 /* Credits.plist */; };
+		433FB16B25468D5900F944E3 /* RLSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433FB16A25468D5900F944E3 /* RLSceneDelegate.swift */; };
 		434066AC212FBE1A00FB1D94 /* Wormholy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434066AB212FBE1A00FB1D94 /* Wormholy.swift */; };
 		434066AE212FC88900FB1D94 /* UserFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434066AD212FC88900FB1D94 /* UserFeedback.swift */; };
 		434066B0212FD27800FB1D94 /* RelistenNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434066AF212FD27800FB1D94 /* RelistenNavigationController.swift */; };
@@ -243,6 +244,7 @@
 		433A44082133B43A0059D251 /* ManageOfflineMusicNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageOfflineMusicNode.swift; sourceTree = "<group>"; };
 		433A440A2133B4B10059D251 /* BugReportingSettingsNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportingSettingsNode.swift; sourceTree = "<group>"; };
 		433A440D2134E9A50059D251 /* Credits.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Credits.plist; path = LicenseGenerator/Credits.plist; sourceTree = SOURCE_ROOT; };
+		433FB16A25468D5900F944E3 /* RLSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RLSceneDelegate.swift; sourceTree = "<group>"; };
 		434066AB212FBE1A00FB1D94 /* Wormholy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Wormholy.swift; path = Helpers/Wormholy.swift; sourceTree = "<group>"; };
 		434066AD212FC88900FB1D94 /* UserFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserFeedback.swift; path = Helpers/UserFeedback.swift; sourceTree = "<group>"; };
 		434066AF212FD27800FB1D94 /* RelistenNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RelistenNavigationController.swift; path = "View Controllers/RelistenNavigationController.swift"; sourceTree = "<group>"; };
@@ -783,6 +785,7 @@
 				7C31551020BF3E0100F07622 /* Relisten.entitlements */,
 				7C8EF11C1D5A49C300004B5C /* Info.plist */,
 				7C8EF1101D5A49C300004B5C /* RLAppDelegate.swift */,
+				433FB16A25468D5900F944E3 /* RLSceneDelegate.swift */,
 				7C8EF1171D5A49C300004B5C /* RLAssets.xcassets */,
 				7C8EF1191D5A49C300004B5C /* RLLaunchScreen.storyboard */,
 			);
@@ -2042,6 +2045,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FD2EEBB223ACEA10056C661 /* ArtistsSearchResultsViewController.swift in Sources */,
+				433FB16B25468D5900F944E3 /* RLSceneDelegate.swift in Sources */,
 				7CC0953D1E6C6D290067FD39 /* ArtistsViewController.swift in Sources */,
 				7C8EF1111D5A49C300004B5C /* RLAppDelegate.swift in Sources */,
 				7C31554920C2D21800F07622 /* ArtistCellNode.swift in Sources */,

@@ -14,20 +14,16 @@ import RealmSwift
 import Crashlytics
 
 public protocol RelistenAppDelegate {
-    var window : UIWindow? { get }
     var rootNavigationController: RelistenNavigationController! { get }
     
     var appIcon : UIImage { get }
-    var isPhishOD : Bool { get }
     
     var isDummyDelegate : Bool { get }
 }
 
 public class RelistenApp {
     public static let sharedApp = RelistenApp(delegate: RelistenDummyAppDelegate())
-    
-    public let launchScreenBounds: CGRect
-    
+        
     @MutableObservable private var pShakeToReportBugEnabled:Bool = true
     public var shakeToReportBugEnabled:MutableObservable<Bool> { return _pShakeToReportBugEnabled }
     
@@ -38,11 +34,7 @@ public class RelistenApp {
         }
     }
     
-    public var delegate : RelistenAppDelegate {
-        didSet {
-            playbackController?.window = delegate.window
-        }
-    }
+    public var delegate : RelistenAppDelegate
     
     public static let logDirectory : String = {
         return NSSearchPathForDirectoriesInDomains(.documentDirectory,
@@ -77,11 +69,6 @@ public class RelistenApp {
         }
     }
     
-    public var isPhishOD : Bool  {
-        get {
-            return delegate.isPhishOD
-        }
-    }
     public var launchCount : Int {
         if let launchCount = UserDefaults.standard.object(forKey: launchCountKey) as! Int? {
             return launchCount
@@ -110,8 +97,6 @@ public class RelistenApp {
         MyLibrary.migrateRealmDatabase()
         self.delegate = delegate
         
-        self.launchScreenBounds = UIScreen.main.bounds
-
         if let enableBugReporting = UserDefaults.standard.object(forKey: bugReportingKey) as! Bool? {
             pShakeToReportBugEnabled = enableBugReporting
         }
@@ -130,7 +115,7 @@ public class RelistenApp {
     }
     
     public func sharedSetup() {
-        playbackController = PlaybackController(withWindow: delegate.window)
+        playbackController = PlaybackController()
         
         DispatchQueue.main.async {
             let _ = DownloadManager.shared
@@ -143,10 +128,8 @@ public class RelistenApp {
         LogDebug("Setting Crashlytics user identifier to \(userIdentifier)")
         Crashlytics.sharedInstance().setUserIdentifier(userIdentifier)
         
-        if !self.isPhishOD {
-            // Initialize CarPlay
-            CarPlayController.shared.setup()
-        }
+        // Initialize CarPlay
+        CarPlayController.shared.setup()
     }
     
     public func loadViews() {
@@ -167,6 +150,17 @@ public class RelistenApp {
         #endif
     }
     
+    public var coloredAppearance : UINavigationBarAppearance {
+        get {
+            let coloredAppearance = UINavigationBarAppearance()
+            coloredAppearance.configureWithOpaqueBackground()
+            coloredAppearance.backgroundColor = AppColors.primary
+            coloredAppearance.titleTextAttributes = [.foregroundColor: AppColors.textOnPrimary]
+            coloredAppearance.largeTitleTextAttributes = [.foregroundColor: AppColors.textOnPrimary]
+            return coloredAppearance
+        }
+    }
+    
     public func setupAppearance() {
         let _ = RatingViewStubBounds
         
@@ -176,11 +170,7 @@ public class RelistenApp {
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: AppColors.textOnPrimary]
         
-        let coloredAppearance = UINavigationBarAppearance()
-        coloredAppearance.configureWithOpaqueBackground()
-        coloredAppearance.backgroundColor = AppColors.primary
-        coloredAppearance.titleTextAttributes = [.foregroundColor: AppColors.textOnPrimary]
-        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: AppColors.textOnPrimary]
+        let coloredAppearance = self.coloredAppearance
                
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
@@ -209,19 +199,6 @@ public class RelistenApp {
         sbbi.backgroundColor = AppColors.primary
         
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = AppColors.textOnPrimary
-
-        if !delegate.isDummyDelegate, let w = delegate.window, let t = w.rootViewController as? UITabBarController {
-            t.viewControllers?.forEach({ tab in
-                if let nav = tab as? UINavigationController {
-                    nav.navigationBar.barTintColor = AppColors.primary
-                    nav.navigationBar.backgroundColor = AppColors.primary
-                    nav.navigationBar.tintColor = AppColors.primary
-                    nav.navigationBar.standardAppearance = coloredAppearance
-                    nav.navigationBar.scrollEdgeAppearance = coloredAppearance
-                }
-            })
-            t.tabBar.tintColor = AppColors.primary
-        }
         
         playbackController?.viewController.applyColors(AppColors.playerColors)
     }
@@ -232,8 +209,6 @@ public extension RelistenAppDelegate {
 }
 
 public class RelistenDummyAppDelegate : RelistenAppDelegate {
-    // The window ivar is requested by the playback controller. It's ok for it to be nil, so let's just return nil here and not complain.
-    public var window: UIWindow? = nil
     public var isDummyDelegate = true
     
     public var rootNavigationController: RelistenNavigationController! {
@@ -243,12 +218,6 @@ public class RelistenDummyAppDelegate : RelistenAppDelegate {
     }
     
     public var appIcon : UIImage {
-        get {
-            fatalError("An application delegate hasn't been set yet!")
-        }
-    }
-    
-    public var isPhishOD : Bool {
         get {
             fatalError("An application delegate hasn't been set yet!")
         }
