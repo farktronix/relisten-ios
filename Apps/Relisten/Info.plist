@@ -83,8 +83,10 @@
 			<key>UIWindowSceneSessionRoleApplication</key>
 			<array>
 				<dict>
+					<key>UILaunchStoryboardName</key>
+					<string>LaunchScreen</string>
 					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+					<string>$(PRODUCT_MODULE_NAME).RLSceneDelegate</string>
 					<key>UISceneConfigurationName</key>
 					<string>Default Configuration</string>
 				</dict>

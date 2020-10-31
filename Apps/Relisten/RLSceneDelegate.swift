@@ -20,24 +20,21 @@ class RLSceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         
-        window = UIWindow(frame: scene.coordinateSpace.bounds)
+        let window = UIWindow(windowScene: scene)
+        self.window = window
         
-        window?.windowScene = scene
-        let tabBarController = RelistenTabBarController(rootNavigationController)
-        window?.rootViewController = tabBarController
-        
-        if rootNavigationController == nil {
-            let artists = ArtistsViewController()
-            let nav = RelistenNavigationController(rootViewController: artists)
-            nav.tabBarItem = artists.tabBarItem
-            
-            rootNavigationController = nav
-        }
+        let artists = ArtistsViewController()
+        let nav = RelistenNavigationController(rootViewController: artists)
+        rootNavigationController = nav
+        nav.tabBarItem = artists.tabBarItem
         
         rootNavigationController.navigationBar.prefersLargeTitles = true
         rootNavigationController.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: AppColors.textOnPrimary]
         
-        window?.makeKeyAndVisible()
+        let tabBarController = RelistenTabBarController(rootNavigationController)
+        window.rootViewController = tabBarController
+        
+        window.makeKeyAndVisible()
         
         RelistenApp.sharedApp.playbackController.window = window
         
@@ -46,7 +43,7 @@ class RLSceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let coloredAppearance = RelistenApp.sharedApp.coloredAppearance
         
-        rootNavigationController.viewControllers.forEach({ tab in
+        tabBarController.viewControllers?.forEach({ tab in
             if let nav = tab as? UINavigationController {
                 nav.navigationBar.barTintColor = AppColors.primary
                 nav.navigationBar.backgroundColor = AppColors.primary
@@ -85,4 +82,9 @@ class RLSceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
+    
+    // TODO: Implement this for state restoration
+    //func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+    //
+    //}
 }

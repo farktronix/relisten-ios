@@ -37,7 +37,6 @@ class PHODAppDelegate: UIResponder, UIApplicationDelegate, RelistenAppDelegate {
         // cannot be in the shared library :/ https://stackoverflow.com/questions/20495064/how-to-integrate-crashlytics-with-static-library
         Fabric.with([Crashlytics.self])
 
-        RelistenApp.sharedApp.setupThirdPartyDependencies()
         RelistenApp.sharedApp.setupAppearance()
         
         window = UIWindow(frame: UIScreen.main.bounds)

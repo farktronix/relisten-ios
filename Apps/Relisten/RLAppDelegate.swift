@@ -31,7 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, RelistenAppDelegate {
         }
     }
     
-
     public lazy var appIcon : UIImage = {
         let infoDictionary = Bundle.main.infoDictionary
         
@@ -54,9 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, RelistenAppDelegate {
         
         // cannot be in the shared library :/ https://stackoverflow.com/questions/20495064/how-to-integrate-crashlytics-with-static-library
         Fabric.with([Crashlytics.self])
-        
-        RelistenApp.sharedApp.setupThirdPartyDependencies()
-                
+                        
         // (farkas) Yuck. We have to get the standard switch bounds on the main thread, and state restoration means we might try to get it on load which deadlocks with other Texture stuff running on the main thread.
         SwitchCellNode.loadStandardSwitchBounds()
         
@@ -114,44 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, RelistenAppDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
 }
-
-// MARK: State Restoration
-//extension AppDelegate {
-//    public func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
-//        return true
-//    }
-//    
-//    public func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
-//        // TODO: If it's been over N hours and the user wasn't playing music, should we go back to the main screen?
-//        return true
-//    }
-//    
-//    public func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
-//        // TODO: Encode the PlaybackController state here
-//    }
-//    
-//    public func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
-//        // TODO: Decode the PlaybackController state here
-//        
-//    }
-//    
-//    public func application(_ application: UIApplication,
-//                              viewControllerWithRestorationIdentifierPath identifierComponents: [String],
-//                              coder: NSCoder) -> UIViewController? {
-//        if let firstIdentifier = identifierComponents.first,
-//           firstIdentifier == "net.relisten.RelistenNavigationController" {
-//            let artists = ArtistsViewController()
-//            let nav = RelistenNavigationController(rootViewController: artists)
-//            nav.tabBarItem = artists.tabBarItem
-//            rootNavigationController = nav
-//            return rootNavigationController
-//        }
-//        return nil
-//    }
-//}
 
 // MARK: URL Handling
 extension AppDelegate {

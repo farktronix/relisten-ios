@@ -142,14 +142,6 @@ public class RelistenApp {
         playbackController.viewDidLoad()
     }
     
-    public func setupThirdPartyDependencies() {
-        #if targetEnvironment(simulator)
-        if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
-            LogDebug("Documents Directory: \(documentsPath)")
-        }
-        #endif
-    }
-    
     public var coloredAppearance : UINavigationBarAppearance {
         get {
             let coloredAppearance = UINavigationBarAppearance()
