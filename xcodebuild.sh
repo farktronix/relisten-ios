@@ -11,9 +11,16 @@ command -v xcpretty >/dev/null 2>&1 || {
     }
 }
 
-XCODE_ARGS="COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_REQUIRED=NO"
-XCODE_DESTINATION="platform=iOS Simulator,name=iPhone X"
+PLATFORM="iOS Simulator"
+DESTINATION=`xcrun simctl list devices available iPhone | sed -nE 's/^ +(iPhone[^\(]*) \(.*/\1/gp' | grep -v "SE" | sort -V | tail -n1`
 
+XCODE_ARGS="COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_REQUIRED=NO"
+XCODE_DESTINATION="platform=$PLATFORM,name=$DESTINATION"
+
+BUILD_COMMAND="build-for-testing"
+if [[ $1 == "test" ]]; then
+    BUILD_COMMAND="test-without-building"
+fi
 
 # bundle exec xcpretty -v
-set -o pipefail && xcodebuild clean build -sdk iphonesimulator -workspace Relisten.xcworkspace -scheme Relisten -destination="$XCODE_DESTINATION" $XCODE_ARGS | bundle exec xcpretty -f `xcpretty-travis-formatter`
+set -o pipefail && xcodebuild $BUILD_COMMAND -sdk iphonesimulator -workspace Relisten.xcworkspace -scheme Relisten -destination "$XCODE_DESTINATION" $XCODE_ARGS | bundle exec xcpretty -f `xcpretty-travis-formatter`
